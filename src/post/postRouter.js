@@ -1,15 +1,12 @@
 import { Router } from "express";
+import userController  from "./postController";
 const router=Router();
 router
-.route('/post')
-.get((req,res)=>{
-    res.send({"message":"Router Ok Get"});
-})
-.post((req,res)=>{
-    res.send({"message":"Router Ok POST"});
-});
+.route('/')
+.get(userController.getOne)
+.post(userController.createOne);
 router
-.route('/post/:id/:num')
+.route('/:id/:num')
 .put((req,res)=>{ 
     console.log(req.params);
     res.send({message:"Router ok put"});
@@ -20,5 +17,4 @@ router
 .delete((req,res)=>{
     res.send({message:"Router ok delete"});
 })
-
 export default router;

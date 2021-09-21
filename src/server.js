@@ -2,6 +2,8 @@ import express from "express";
 import morgan from 'morgan';
 import {json,urlencoded}from 'body-parser';
 import postrouter from "./post/postRouter";
+import {connect} from './util/database';
+import userRouter from './user/userRouter';
 const router=express.Router();
 const app=express();
 app.use(morgan('tiny'));
@@ -13,6 +15,8 @@ const customlogger=(req,res,next)=>{
     console.log(req.body);
     next();
 }
+app.use('/api/post',postrouter);
+app.use('/api/user',userRouter) 
 app.get('/',(req,res)=>{
     console.log(req.body);
     res.send({"Message":"ok get"});
@@ -31,7 +35,8 @@ app.post('/',customlogger,(req,res)=>{
     console.log(req.body);
     res.send({"Message":"ok post"});
 });
-export const start=()=>{
+export const start=async()=>{
+    await connect();
 app.listen(3000,()=>{
     console.log("Server started at 3000");
 })

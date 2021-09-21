@@ -1,5 +1,5 @@
 import mongoose, { SchemaTypes } from "mongoose";
-const postSchema=new Schema({
+const postSchema=new mongoose.Schema({
     title:{
         type:String,
         required:true
