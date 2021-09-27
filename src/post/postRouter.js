@@ -8,14 +8,6 @@ router
 router
 .route('/:id')
 .get(Controllers.getOne)
-.put((req,res)=>{ 
-    console.log(req.params);
-    res.send({message:"Router ok put"});
-})
-.patch((req,res)=>{
-    res.send({message:"Router ok Patch"});
-})
-.delete((req,res)=>{
-    res.send({message:"Router ok delete"});
-})
+.patch(Controllers.updateOne)
+.delete(Controllers.removeOne)
 export default router;

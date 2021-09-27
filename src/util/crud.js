@@ -40,9 +40,30 @@ catch(e){
 }
 }
 export const  updateOne=model=>async(req,res)=>{
-
+try{
+ const doc=await model.findOneAndUpdate({_id:req.params.id},req.body,{new:true}).exec();
+ if(!doc){
+    return res.status(404).end();
+} 
+res.status(200).json({data:doc});
+}
+catch(e){
+    console.error(e);
+    res.status(400).end();
+}
 }
 export const removeOne=model=>async(req,res)=>{
+    try{
+        const doc=await model.findOneAndRemove({_id:req.params.id},req.body).exec();
+        if(!doc){
+           return res.status(404).end();
+       } 
+       res.status(200).json({data:doc});
+       }
+       catch(e){
+           console.error(e);
+           res.status(400).end();
+       }
 
 }
 export const crudController=model=>({
