@@ -1,7 +1,7 @@
-import mongoose, { mongo, Mongoose } from "mongoose";
+import mongoose from "mongoose";
 const userSchema=new mongoose.Schema({
     email:{
-        tupe:String,
+        type:String,
         required:true,
         unique:true
     },

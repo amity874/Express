@@ -9,7 +9,7 @@ const postSchema=new mongoose.Schema({
         minlength:10
     },
     status:{
-        type:String,
+        type:String ,
         enum:['draft','under review','published'],
         default:'draft'
     },
