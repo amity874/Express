@@ -4,8 +4,10 @@ import {json,urlencoded}from 'body-parser';
 import postrouter from "./post/postRouter";
 import {connect} from './util/database';
 import userRouter from './user/userRouter';
+import cors from "cors"
 const router=express.Router();
 const app=express();
+app.use(cors());
 app.use(morgan('tiny'));
 app.use(json());
 app.use(urlencoded({extended: true}));
