@@ -1,45 +1,48 @@
 import express from "express";
-import morgan from 'morgan';
-import {json,urlencoded}from 'body-parser';
-import postrouter from "./post/postRouter";
-import {connect} from './util/database';
-import userRouter from './user/userRouter';
-import cors from "cors"
-const router=express.Router();
-const app=express();
+import morgan from "morgan";
+import { json, urlencoded } from "body-parser";
+import postRouter from "./post/postRouter";
+import userRouter from "./user/userRouter";
+import { connect } from "./util/database";
+import cors from "cors";
+import { register, protect, login } from "./util/authentication";
+
+const app = express();
+const router = express.Router();
+
 app.use(cors());
-app.use(morgan('tiny'));
+app.use(morgan('dev'));
 app.use(json());
 app.use(urlencoded({extended: true}));
-app.use('/api/post',postrouter);
-const customlogger=(req,res,next)=>{
-    console.log("Logger incomming");
+
+const customLogger = (req, res, next) => {
+    console.log("Logger incoming");
     console.log(req.body);
     next();
 }
-app.use('/api/post',postrouter);
-app.use('/api/user',userRouter) 
-app.get('/',(req,res)=>{
-    console.log(req.body);
-    res.send({"Message":"ok get"});
+
+app.use('/api', protect);
+
+
+app.use('/api/post',postRouter);
+app.use('/api/user',userRouter);
+
+
+app.post('/signup', register);
+app.post('/signin', login);
+
+app.get('/', (req, res) => {
+    res.send({message: "OK GET"});
 });
-app.post('/',customlogger,(req,res)=>{
+
+app.post('/', customLogger, (req, res) => {
     console.log(req.body);
-    res.send({"Message":"ok post"});
+    res.send({message: "OK POST"});
 });
-// router.get('/post',(req,res)=>{
-//     res.send({"message":"Router Ok"});
-// });
-// router.post('/post',(req,res)=>{
-//     res.send({"message":"Ok POST"});
-// });
-app.post('/',customlogger,(req,res)=>{
-    console.log(req.body);
-    res.send({"Message":"ok post"});
-});
-export const start=async()=>{
+
+export const start = async () => {
     await connect();
-app.listen(3000,()=>{
-    console.log("Server started at 3000");
-})
+    app.listen(3000, () => {
+        console.log("Server started at 3000");
+    });
 }
